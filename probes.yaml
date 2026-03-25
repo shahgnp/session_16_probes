@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: probe-demo
+  labels:
+    app: probe-demo
+spec:
+  containers:
+  - name: nginx
+    image: nginx:alpine
+    # Create a file /tmp/healthy on startup
+    command: ["/bin/sh", "-c", "touch /tmp/liveness /tmp/readiness; sleep 3600"]
+    
+    # LIVENESS: If /tmp/healthy is gone, KILL ME
+    livenessProbe:
+      exec:
+        command:
+        - cat
+        - /tmp/liveness
+      initialDelaySeconds: 5
+      periodSeconds: 5
+
+    # READINESS: If /tmp/healthy is gone, STOP TRAFFIC
+    readinessProbe:
+      exec:
+        command:
+        - cat
+        - /tmp/readiness
+      initialDelaySeconds: 5
+      periodSeconds: 5
