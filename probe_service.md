@@ -69,7 +69,7 @@ filename: `nginx-service.yaml`
 apiVersion: v1
 kind: Service
 metadata:
-  name: demo-service
+  name: nginx-service
 spec:
   selector:
     app: demo-fleet
